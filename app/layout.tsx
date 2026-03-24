@@ -1,6 +1,6 @@
 import type { Metadata, Viewport } from 'next'
 import { JetBrains_Mono, Geist } from 'next/font/google'
-import { Analytics } from '@vercel/analytics/next'
+// import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 import { cn } from "@/lib/utils";
 
@@ -49,7 +49,7 @@ export default function RootLayout({
     <html lang="en" className={cn("dark", "font-sans", geist.variable)}>
       <body className={`${jetbrainsMono.variable} font-mono antialiased min-h-screen`}>
         {children}
-        <Analytics />
+        {/* <Analytics /> */}
       </body>
     </html>
   )

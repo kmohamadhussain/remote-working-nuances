@@ -4,11 +4,10 @@ import { useState, useCallback } from "react"
 import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion"
 import { Check, X, Zap, Flame } from "lucide-react"
 import confetti from "canvas-confetti"
-import { getQuestionsForPersona, type Question, type Persona } from "@/lib/game-data"
+import { getQuestions, type Question } from "@/lib/game-data"
 import { NuanceModal } from "./nuance-modal"
 
 interface LogicArenaProps {
-  persona: Persona
   onComplete: (results: { questionId: number; correct: boolean }[]) => void
 }
 
@@ -25,7 +24,7 @@ function DropZone({ type, isHovered, onDrop, onHover }: DropZoneProps) {
   return (
     <motion.div
       className={`
-        relative flex-1 min-h-[140px] rounded-lg border-2 border-dashed
+        relative flex-1 min-h-\[140px\] rounded-lg border-2 border-dashed
         flex flex-col items-center justify-center gap-2 p-4
         transition-all duration-300 cursor-pointer
         ${isGreen 
@@ -117,7 +116,7 @@ function DraggableCard({
     >
       <div className={`
         relative p-6 rounded-lg border-2 border-indigo-500/50 bg-card
-        shadow-xl shadow-indigo-500/10 min-h-[160px]
+        shadow-xl shadow-indigo-500/10 min-h-\[160px\]
         flex items-center justify-center text-center
         transition-all duration-300
         ${greenHovered ? 'border-emerald-400 shadow-emerald-500/20' : ''}
@@ -149,8 +148,8 @@ function DraggableCard({
   )
 }
 
-export function LogicArena({ persona, onComplete }: LogicArenaProps) {
-  const [questions] = useState(() => getQuestionsForPersona(persona))
+export function LogicArena({ onComplete }: LogicArenaProps) {
+  const [questions] = useState(() => getQuestions())
   const [currentIndex, setCurrentIndex] = useState(0)
   const [results, setResults] = useState<{ questionId: number; correct: boolean }[]>([])
   const [showModal, setShowModal] = useState(false)
@@ -215,7 +214,7 @@ export function LogicArena({ persona, onComplete }: LogicArenaProps) {
         </div>
         <div className="h-3 bg-secondary rounded-full overflow-hidden border border-border">
           <motion.div
-            className="h-full bg-gradient-to-r from-indigo-600 to-indigo-400"
+            className="h-full bg-linear-to-r from-indigo-600 to-indigo-400"
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ type: "spring", damping: 20, stiffness: 100 }}
@@ -224,7 +223,7 @@ export function LogicArena({ persona, onComplete }: LogicArenaProps) {
       </motion.div>
 
       {/* Card Container */}
-      <div className="min-h-[200px] flex items-center justify-center relative">
+      <div className="min-h-\[200px\] flex items-center justify-center relative">
         <AnimatePresence mode="wait">
           <DraggableCard
             key={currentQuestion.id}

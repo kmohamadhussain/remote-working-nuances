@@ -5,16 +5,15 @@ import { motion } from "framer-motion"
 import { Star, Tag, MessageSquare, RefreshCw, Download, Shield } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { feedbackTags, saveResult, getHistory, type GameResult, type Persona } from "@/lib/game-data"
+import { feedbackTags, saveResult, getHistory, type GameResult } from "@/lib/game-data"
 
 interface FeedbackScreenProps {
   name: string
-  persona: Persona
   score: number
   onRestart: () => void
 }
 
-export function FeedbackScreen({ name, persona, score, onRestart }: FeedbackScreenProps) {
+export function FeedbackScreen({ name, score, onRestart }: FeedbackScreenProps) {
   const [rating, setRating] = useState(0)
   const [hoveredRating, setHoveredRating] = useState(0)
   const [selectedTags, setSelectedTags] = useState<string[]>([])
@@ -32,7 +31,6 @@ export function FeedbackScreen({ name, persona, score, onRestart }: FeedbackScre
   const handleSubmit = () => {
     const result: GameResult = {
       name,
-      persona,
       score,
       feedback: {
         rating,
@@ -73,10 +71,9 @@ export function FeedbackScreen({ name, persona, score, onRestart }: FeedbackScre
     // Table
     autoTable(doc, {
       startY: 45,
-      head: [["Name", "Persona", "Score", "Rating", "Tags", "Date"]],
+      head: [["Name", "Score", "Rating", "Tags", "Date"]],
       body: history.map((r) => [
         r.name,
-        r.persona,
         `${r.score}%`,
         r.feedback.rating ? `${r.feedback.rating}/5` : "N/A",
         r.feedback.tags.join(", ") || "None",
@@ -253,7 +250,7 @@ export function FeedbackScreen({ name, persona, score, onRestart }: FeedbackScre
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               placeholder="Share your thoughts..."
-              className="bg-input border-border focus:border-indigo-500 min-h-[100px] resize-none"
+              className="bg-input border-border focus:border-indigo-500 min-h-\[100px\] resize-none"
             />
           </motion.div>
 

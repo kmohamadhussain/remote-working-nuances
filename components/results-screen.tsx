@@ -5,19 +5,18 @@ import { motion } from "framer-motion"
 import { Copy, Check, Trophy, TrendingUp, AlertTriangle, Rocket } from "lucide-react"
 import confetti from "canvas-confetti"
 import { Button } from "@/components/ui/button"
-import { getRank, generateSlackMessage, type Persona } from "@/lib/game-data"
+import { getRank, generateSlackMessage } from "@/lib/game-data"
 
 interface ResultsScreenProps {
   name: string
-  persona: Persona
   score: number
   onContinue: () => void
 }
 
-export function ResultsScreen({ name, persona, score, onContinue }: ResultsScreenProps) {
+export function ResultsScreen({ name, score, onContinue }: ResultsScreenProps) {
   const [copied, setCopied] = useState(false)
   const rank = getRank(score)
-  const slackMessage = generateSlackMessage(name, persona, score)
+  const slackMessage = generateSlackMessage(name, score)
 
   useEffect(() => {
     // Celebrate high scores
@@ -111,7 +110,7 @@ export function ResultsScreen({ name, persona, score, onContinue }: ResultsScree
               <motion.div
                 className={`
                   w-32 h-32 rounded-full border-4 flex items-center justify-center
-                  bg-gradient-to-br ${getScoreColor()} bg-opacity-20
+                  bg-linear-to-br ${getScoreColor()} bg-opacity-20
                   ${score >= 90 ? 'border-emerald-400 animate-glow' : score >= 70 ? 'border-indigo-400' : 'border-rose-400'}
                 `}
                 initial={{ scale: 0 }}
@@ -145,15 +144,11 @@ export function ResultsScreen({ name, persona, score, onContinue }: ResultsScree
           {/* User Info */}
           <motion.div
             variants={itemVariants}
-            className="grid grid-cols-2 gap-4 text-sm"
+            className="text-sm"
           >
             <div className="p-4 rounded-lg bg-secondary/50 border border-border">
               <p className="text-xs text-muted-foreground mb-1">Name</p>
               <p className="font-bold text-foreground">{name}</p>
-            </div>
-            <div className="p-4 rounded-lg bg-secondary/50 border border-border">
-              <p className="text-xs text-muted-foreground mb-1">Role</p>
-              <p className="font-bold text-foreground capitalize">{persona}</p>
             </div>
           </motion.div>
 
@@ -162,7 +157,7 @@ export function ResultsScreen({ name, persona, score, onContinue }: ResultsScree
             <p className="text-xs text-muted-foreground font-medium">Score Breakdown</p>
             <div className="h-4 bg-secondary rounded-full overflow-hidden border border-border">
               <motion.div
-                className={`h-full bg-gradient-to-r ${getScoreColor()}`}
+                className={`h-full bg-linear-to-r ${getScoreColor()}`}
                 initial={{ width: 0 }}
                 animate={{ width: `${score}%` }}
                 transition={{ type: "spring", damping: 20, stiffness: 100, delay: 0.5 }}
@@ -178,7 +173,7 @@ export function ResultsScreen({ name, persona, score, onContinue }: ResultsScree
           <motion.div variants={itemVariants} className="space-y-3">
             <p className="text-xs text-muted-foreground font-medium">Share on Slack</p>
             <div className="relative p-4 rounded-lg bg-input border border-border">
-              <pre className="text-sm text-foreground whitespace-pre-wrap break-words pr-8">
+              <pre className="text-sm text-foreground whitespace-pre-wrap wrap-break-words pr-8">
                 {slackMessage}
               </pre>
               <Button

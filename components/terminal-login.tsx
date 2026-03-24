@@ -2,32 +2,23 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Terminal, ChevronRight, User, Code } from "lucide-react"
+import { Terminal, ChevronRight, User } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
-import { personas, type Persona } from "@/lib/game-data"
 
 interface TerminalLoginProps {
-  onStart: (name: string, persona: Persona) => void
+  onStart: (name: string) => void
 }
 
 export function TerminalLogin({ onStart }: TerminalLoginProps) {
   const [name, setName] = useState("")
-  const [persona, setPersona] = useState<Persona | "">("")
   const [isInitializing, setIsInitializing] = useState(false)
 
   const handleSubmit = async () => {
-    if (!name.trim() || !persona) return
+    if (!name.trim()) return
     setIsInitializing(true)
     await new Promise((resolve) => setTimeout(resolve, 1500))
-    onStart(name.trim(), persona as Persona)
+    onStart(name.trim())
   }
 
   const containerVariants = {
@@ -120,40 +111,14 @@ export function TerminalLogin({ onStart }: TerminalLoginProps) {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
-              <Code className="h-5 w-5 text-indigo-400 shrink-0" />
-              <div className="flex-1">
-                <label className="text-xs text-muted-foreground mb-1 block">
-                  Your Role
-                </label>
-                <Select
-                  value={persona}
-                  onValueChange={(value) => setPersona(value as Persona)}
-                  disabled={isInitializing}
-                >
-                  <SelectTrigger className="bg-input border-border focus:border-indigo-500 focus:ring-indigo-500/20">
-                    <SelectValue placeholder="Select your dev persona..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {personas.map((p) => (
-                      <SelectItem key={p.value} value={p.value}>
-                        <span className="flex items-center gap-2">
-                          <span>{p.icon}</span>
-                          <span>{p.label}</span>
-                        </span>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
+
           </motion.div>
 
           {/* Submit Button */}
           <motion.div variants={itemVariants} className="pt-4">
             <Button
               onClick={handleSubmit}
-              disabled={!name.trim() || !persona || isInitializing}
+              disabled={!name.trim() || isInitializing}
               className="w-full bg-indigo-600 hover:bg-indigo-700 text-white border border-indigo-500 
                          disabled:opacity-50 disabled:cursor-not-allowed
                          transition-all duration-300 group"
@@ -186,7 +151,7 @@ export function TerminalLogin({ onStart }: TerminalLoginProps) {
             variants={itemVariants}
             className="text-xs text-muted-foreground text-center pt-2"
           >
-            v2026.03.22 | Developer Edition | 10 assessment queries loaded
+            v2026.03.24 | Remote Work Edition | 10 assessment queries loaded
           </motion.p>
         </div>
       </div>

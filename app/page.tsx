@@ -6,13 +6,11 @@ import { TerminalLogin } from "@/components/terminal-login"
 import { LogicArena } from "@/components/logic-arena"
 import { ResultsScreen } from "@/components/results-screen"
 import { FeedbackScreen } from "@/components/feedback-screen"
-import { type Persona } from "@/lib/game-data"
 
 type GamePhase = "login" | "game" | "results" | "feedback"
 
 interface UserData {
   name: string
-  persona: Persona
 }
 
 interface GameState {
@@ -25,8 +23,8 @@ export default function RemoteNuanceChallenge() {
   const [userData, setUserData] = useState<UserData | null>(null)
   const [gameState, setGameState] = useState<GameState | null>(null)
 
-  const handleLogin = useCallback((name: string, persona: Persona) => {
-    setUserData({ name, persona })
+  const handleLogin = useCallback((name: string) => {
+    setUserData({ name })
     setPhase("game")
   }, [])
 
@@ -68,8 +66,8 @@ export default function RemoteNuanceChallenge() {
           }}
         />
         {/* Gradient overlays */}
-        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-indigo-500/5 to-transparent" />
-        <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-indigo-500/5 to-transparent" />
+        <div className="absolute top-0 left-0 right-0 h-40 bg-linear-to-b from-indigo-500/5 to-transparent" />
+        <div className="absolute bottom-0 left-0 right-0 h-40 bg-linear-to-t from-indigo-500/5 to-transparent" />
       </div>
 
       {/* Content */}
@@ -105,11 +103,10 @@ export default function RemoteNuanceChallenge() {
                     <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
                     <span>Session active: {userData.name}</span>
                   </div>
-                  <span className="text-indigo-400 capitalize">{userData.persona}</span>
                 </div>
               </div>
               
-              <LogicArena persona={userData.persona} onComplete={handleGameComplete} />
+              <LogicArena onComplete={handleGameComplete} />
             </motion.div>
           )}
 
@@ -124,7 +121,6 @@ export default function RemoteNuanceChallenge() {
             >
               <ResultsScreen
                 name={userData.name}
-                persona={userData.persona}
                 score={gameState.score}
                 onContinue={handleContinueToFeedback}
               />
@@ -142,7 +138,6 @@ export default function RemoteNuanceChallenge() {
             >
               <FeedbackScreen
                 name={userData.name}
-                persona={userData.persona}
                 score={gameState.score}
                 onRestart={handleRestart}
               />
